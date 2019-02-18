@@ -1,0 +1,42 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav transition-3s" [ngClass]="{'w-70x': isNavMini}" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <mat-toolbar class="transition-3s color-darkviolet">
+      <span class="p-r-2x transition-3s" [ngClass]="{'d-none': isNavMini}">Scrap-X</span>
+      <button mat-mini-fab color="primary" class="transition-3s menu-button" (click)="isNavMini = !isNavMini">
+        <i class="material-icons">view_list</i>
+      </button>
+    </mat-toolbar>
+    <mat-nav-list class="transition-3s">
+      <a mat-list-item [routerLink]="['/site-url']" matTooltip="Sample URL">
+        <i class="material-icons transition-3s" [ngClass]="{'md-36': isNavMini}">edit_attributes</i>
+        <span class="p-l" [ngClass]="{'d-none': isNavMini}">Sample URL</span>
+      </a>
+      <a mat-list-item [routerLink]="['/spreadsheet']" matTooltip="Fill Spreadsheet">
+        <i class="material-icons transition-3s" [ngClass]="{'md-36': isNavMini}">view_comfy</i>
+        <span class="p-l" [ngClass]="{'d-none': isNavMini}">Fill Spreadsheet</span>
+      </a>
+      <a mat-list-item [routerLink]="['/picker-sets']" matTooltip="Picker Sets">
+        <i class="material-icons transition-3s" [ngClass]="{'md-36': isNavMini}">format_paint</i>
+        <span class="p-l" [ngClass]="{'d-none': isNavMini}">Picker Sets</span>
+      </a>
+      <a mat-list-item [routerLink]="['/settings']" matTooltip="Settings">
+        <i class="material-icons transition-3s" [ngClass]="{'md-36': isNavMini}">tune</i>
+        <span class="p-l" [ngClass]="{'d-none': isNavMini}">Settings</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="content-bg" [ngClass]="{'m-l-7x': isNavMini}">
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="p-r-2x transition-3s" [ngClass]="{'d-none': !isNavMini}">Scrap-X</span>
+      <span>v 0.02</span>
+    </mat-toolbar>
+    <div>
+      <app-content></app-content>
+    </div>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

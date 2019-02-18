@@ -1,0 +1,295 @@
+<div class="mat-header">Sample URL</div>
+<mat-grid-list cols="1">
+  <mat-grid-tile>
+    <mat-horizontal-stepper class="opacity-7 w-90" [linear]="isLinear" #stepper>
+      <mat-step [stepControl]="urlFormGroup">
+        <form [formGroup]="urlFormGroup">
+          <ng-template matStepLabel>Web URL</ng-template>
+          <mat-form-field class="w-100">
+            <div matPrefix class="position-relative-p-t p-r">
+              <i class="material-icons">insert_link</i>
+            </div>
+            <input matInput placeholder="URL" formControlName="url" required>
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <div matPrefix class="position-relative-p-t p-r">
+              <i class="material-icons">insert_drive_file</i>
+            </div>
+            <input matInput placeholder="Upload Excel File (optional) : .csv, .xlsx, .xls" disabled [value]="selectedFileName">
+            <div matSuffix class="p-y">
+              <span class="p-x">
+                <button id="uploadButton" matTooltip="Attach file" class="c-primary bg-c-white" mat-mini-fab align="end" type="button" (click)="fileInput.click()">
+                  <i class="material-icons">attach_file</i>
+                </button>
+              </span>
+              <span class="p-x" *ngIf="selectedFileName !== ''">
+                <button id="uploadButton" matTooltip="Reset" class="c-primary bg-c-white" mat-mini-fab align="end" type="button" (click)="removeFile()">
+                  <i class="material-icons">replay</i>
+                </button>
+              </span>
+              <span class="p-x" *ngIf="selectedFileName !== ''">
+                <button id="uploadButton" matTooltip="Upload File" color="primary" mat-mini-fab align="end" type="button" [disabled]="isFileUploading"
+                  (click)="uploadFile()">
+                  <i class="material-icons">cloud_upload</i>
+                </button>
+              </span>
+              <input id="file-id" style="display: none" type="file" formControlName="fileName" accept=".xlsx, .xls, .csv" #fileInput (change)="fileSelect($event)"
+              />
+            </div>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Outline form field</mat-label>
+            <input matInput placeholder="Upload File">
+          </mat-form-field> -->
+
+          <mat-accordion>
+            <mat-expansion-panel class="box-shadow-none text-center">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Advanced options
+                </mat-panel-title>
+                <mat-panel-description>
+                  Paths & Params
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <form [formGroup]="urlAdvOptions">
+                <mat-form-field>
+                  <mat-label>Select</mat-label>
+                  <mat-select #fontSize formControlName="type" (selectionChange)="toggleAdvOption($event.value)">
+                    <mat-option value="true">Path /</mat-option>
+                    <mat-option value="false">Param ?</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div [class]="isAdvOption ? 'd-inline-block' : 'd-none'">
+                  <mat-form-field *ngIf="isOptionSelected; else showParams">
+                    <mat-label>Path</mat-label>
+                    <textarea matInput cdkTextareaAutosize formControlName="path" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+                  </mat-form-field>
+                  <ng-template #showParams>
+                    <mat-form-field>
+                      <mat-label>key</mat-label>
+                      <textarea matInput cdkTextareaAutosize formControlName="key" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <span matPrefix>: &nbsp;</span>
+                      <mat-label>value</mat-label>
+                      <textarea matInput cdkTextareaAutosize formControlName="value" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+                    </mat-form-field>
+                  </ng-template>
+                  <button mat-flat-button color="primary" class="margin" (click)="addExtension()">Add</button>
+                </div>
+              </form>
+              <div class="m-t m-b-2x text-center" *ngIf="extensions.length > 0">
+                <code>{{ 'final URL : ' + finalUrl}}</code>
+              </div>
+              <div cdkDropList class="example-list" *ngIf="extensions.length > 0" (cdkDropListDropped)="drop($event)">
+                <div class="example-box" [ngClass]="{'param': option.type == 'param'}" *ngFor="let option of extensions; let i=index" cdkDrag>
+                  <div class="d-inline-block">{{option.type == 'path' ? option.type + ' /' : option.type + ' ?'}}</div>
+                  <div class="d-inline-block" *ngIf="option.key != undefined">{{'Key: ' + option.key}}</div>
+                  <div class="d-inline-block" *ngIf="option.value != undefined">{{'Value: ' + option.value}}</div>
+                  <div class="d-inline-block" *ngIf="option.path != undefined">{{'/' + option.path}}</div>
+                  <div class="d-inline-block">
+                    <button mat-button color="warn" (click)="removeExtension(i)">
+                      <i class="material-icons">close</i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div>
+            <button mat-button matStepperNext class="float-right">Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="attributeFormGroup">
+        <form [formGroup]="attributeFormGroup">
+          <ng-template matStepLabel>Set Attributes</ng-template>
+          <div class="text-center">
+            <mat-form-field *ngIf="attributesArray.length === 0; else showAttrbList">
+              <mat-label>Attribute Name</mat-label>
+              <textarea matInput cdkTextareaAutosize formControlName="attribute" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="2"></textarea>
+            </mat-form-field>
+            <ng-template #showAttrbList>
+              <mat-form-field>
+                <mat-label>Select Attribute</mat-label>
+                <mat-select matNativeControl formControlName="attributeLsit" (selectionChange)="selectAttribute($event.value)">
+                  <mat-option *ngFor="let attribute of attributesArray" [value]="attribute">{{attribute}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-template>
+            <mat-form-field>
+              <mat-label>Select Type</mat-label>
+              <mat-select matNativeControl formControlName="type">
+                <mat-option *ngFor="let type of locatorTypes" [value]="type.id">{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Locator</mat-label>
+              <textarea matInput cdkTextareaAutosize formControlName="locator" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="3"></textarea>
+            </mat-form-field>
+            <button mat-flat-button color="primary" class="margin" (click)="addAttribute()">Add</button>
+          </div>
+          <div class="example-container" *ngIf="attributesList.length > 0">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8 box-shadow-none">
+              <ng-container matColumnDef="#">
+                <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+                <mat-cell *matCellDef="let element;let i = index"> {{i+1}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="attribute">
+                <mat-header-cell *matHeaderCellDef> Attributes Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.attribute}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="locator">
+                <mat-header-cell *matHeaderCellDef> Locator </mat-header-cell>
+                <mat-cell *matCellDef="let element" matTooltip="Attach file">
+                  <p class="text-wrap"> {{element.locator}}</p>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{locatorTypes[+element.type].type}} </mat-cell>
+                <!-- <mat-cell *matCellDef="let element" class="p-r">
+                  <mat-form-field>
+                    <mat-select placeholder="Type" formControlName="type" (selectionChange)="toggleAdvOption($event.value)">
+                      <mat-option *ngFor="let type of locatorTypes;let i = index" [value]="type.id">{{type.type}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-cell> -->
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef class="justify-content-end"> Action </mat-header-cell>
+                <mat-cell *matCellDef="let i = index" class="justify-content-end p-r">
+                  <button mat-button color="warn" (click)="removeAttribute(i)">
+                    <i class="material-icons">cancel</i>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+          <div class="margin">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext class="float-right">Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Result</ng-template>
+        <div class="text-center p-1">You are now done.</div>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Target URL
+              </mat-panel-title>
+              <mat-panel-description>
+                Base & Final URL
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list role="list">
+              <mat-list-item role="listitem">
+                <span class="url-content">BASE URL : {{ urlFormGroup.value.url }}</span>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <span class="url-content">FINAL URL : {{ finalUrl }}</span>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Attributes
+              </mat-panel-title>
+              <mat-panel-description>
+                Total : {{ attributesList.length }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-accordion>
+              <mat-expansion-panel *ngFor="let attribute of attributesList">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{attribute.attribute}}
+                  </mat-panel-title>
+                  <mat-panel-description class="justify-content-end">
+                    Type : {{locatorTypes[+attribute.type].type}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list role="list">
+                  <mat-list-item role="listitem">LOCATOR : {{ attribute.locator }}</mat-list-item>
+                </mat-list>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div class="p-1">
+          <button mat-button matStepperPrevious class="m-x">Back</button>
+          <span class=" d-flex justify-content-center">
+            <button mat-button mat-flat-button class="m-x bg-c-dark" (click)="stepper.reset()">Reset</button>
+            <button mat-button mat-raised-button class="m-x" color="primary" [disabled]="isProcessing" (click)="processUrl()">
+              <span class="p-r">
+                <i class="material-icons position-relative-p-t" [ngClass]="{'rotate': isProcessing}">toys</i>
+              </span>
+              <strong class="md-font">Process URL</strong>
+            </button>
+          </span>
+        </div>
+        <mat-card *ngIf="isShowResult">
+          <!-- <iframe [src]="finalUrl | safeUrl"></iframe> -->
+          <div class="p-1" *ngIf="scrapResult.result; else showErrorMessage">
+            <i class="material-icons font-size-2m c-green status-icon">check_circle</i>
+            <span class="font-size-2m c-green">Success!</span>
+            <div class="d-inline-table float-right">
+              <a mat-flat-button (click)="downloadFile()" class="m-x" color="primary" [href]="downloadFileUrl" *ngIf="scrapResult.isFileAttach">
+                <span class="position-relative-p-t p-r">
+                  <i class="material-icons">cloud_download</i>
+                </span>
+                <strong class="md-font">Download File</strong>
+              </a>
+              <button mat-button mat-flat-button class="bg-c-green c-dark m-x" (click)="savePicker()">
+                <span class="position-relative-p-t p-r">
+                  <i class="material-icons">beenhere</i>
+                </span>
+                <strong class="md-font">Save Picker Set</strong>
+              </button>
+              <!-- <button mat-button mat-flat-button color="primary" [ngClass]="{'d-none-i': !scrapResult.isFileAttach}" (click)="downloadFile()">
+                <a [href]="downloadFileUrl" class="c-white">
+                  <span class="position-relative-p-t p-r">
+                    <i class="material-icons">cloud_download</i>
+                  </span>
+                  <strong class="md-font">Download File</strong>
+                </a>
+              </button> -->
+            </div>
+          </div>
+          <ng-template #showErrorMessage>
+            <div class="p-1">
+              <i class="material-icons font-size-2m c-red status-icon">cancel</i>
+              <span class="font-size-2m c-red">Failed!</span>
+            </div>
+          </ng-template>
+          <table matSort class="w-100" *ngIf="scrapResult.result" (matSortChange)="sortData($event)">
+            <tr>
+              <th mat-sort-header="name">Attribute Name</th>
+              <th mat-sort-header="calories">Extracted Value</th>
+            </tr>
+
+            <tr class="max-w-400x" *ngFor="let attribute of scrapResult.attributeList;let i = index">
+              <td>{{Utils.keys(attribute)}}</td>
+              <td>{{attribute[Utils.keys(attribute)]}}</td>
+            </tr>
+          </table>
+        </mat-card>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-grid-tile>
+</mat-grid-list>

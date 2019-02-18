@@ -1,0 +1,72 @@
+<div class="mat-header bg-c-dark">Picker Sets</div>
+<mat-grid-list cols="2" rowHeight="9:1" class="bg-c-dark">
+  <mat-grid-tile class="overflow-v">
+    <mat-form-field class="w-100 p-x-3">
+      <div matPrefix class="position-relative-p-t p-r">
+        <i class="material-icons">search</i>
+      </div>
+      <input matInput placeholder="Search picker set" [(ngModel)]="searchPicker" (keyup)="searchPickerList()">
+    </mat-form-field>
+  </mat-grid-tile>
+  <mat-grid-tile class="overflow-v">
+    <div class="w-100 p-x-3">
+      <button mat-flat-button class="float-right" color="accent" (click)="openDialog(true)">
+        <i class="material-icons">playlist_add</i>
+        Create Picker Set
+      </button>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile role="listitem" class="overflow-v w-100">
+    <mat-grid-tile-header class="justify-content-center l-r-4 bg-base-light font-size-1m">Picker Set List</mat-grid-tile-header>
+    <table mat-table [dataSource]="pickerSetSource" class="mat-elevation-z8 bg-c-dark w-100 m-3">
+
+      <ng-container matColumnDef="#">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="setName">
+        <th mat-header-cell *matHeaderCellDef> Picker-Set Name </th>
+        <td mat-cell *matCellDef="let picker"> {{picker.p_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef> Total Attributes </th>
+        <td mat-cell *matCellDef="let picker"> {{picker.p_length}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let picker">
+          <i class="material-icons c-green" *ngIf="picker.isVerified else showInvalid">check_circle_outline</i>
+          <ng-template #showInvalid>
+            <i class="material-icons c-red">error_outline</i>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="timeStamp">
+        <th mat-header-cell *matHeaderCellDef> Date / Time </th>
+        <td mat-cell *matCellDef="let picker"> {{picker.update_time | date:'dd, MMM yy / hh : mm aaaa'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Actions </th>
+        <td mat-cell class="text-right p-r" *matCellDef="let i = index">
+          <button mat-icon-button matTooltip="View" class="margin">
+            <i class="material-icons rotate">visibility</i>
+          </button>
+          <button mat-icon-button matTooltip="Edit" class="margin" (click)="editPickerSet(i)">
+            <i class="material-icons rotate">edit</i>
+          </button>
+          <button mat-icon-button matTooltip="Remove" class="margin" (click)="removePickerSet(i)">
+            <i class="material-icons rotate">delete_forever</i>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-grid-tile>
+</mat-grid-list>

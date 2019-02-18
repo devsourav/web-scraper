@@ -1,0 +1,262 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/*--------Padding Start-------*/
+.p {
+    padding: 5px;
+}
+
+.p-1 {
+    padding: 10px;
+}
+
+.p-l {
+    padding-left: 5px;
+}
+
+.p-r {
+    padding-right: 5px !important;
+}
+
+.p-r-2x {
+    padding-right: 20px;    
+}
+
+.p-x {
+    padding-left: 5px;
+    padding-right: 5px
+}
+
+.p-x-3 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.p-t {
+    padding-top: 5px;
+}
+
+.p-y {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+/*--------Padding End---------*/
+
+/*--------Margin Start--------*/
+.margin {
+    margin: 5px !important;
+}
+.m-3 {
+    margin: 3rem;
+}
+
+.m-t-3 {
+    margin-top: 3rem;
+}
+ 
+.m-t {
+    margin-top: 5px;
+}
+
+.m-b-2x {
+    margin-bottom: 20px;
+}
+
+.m-l-7x {
+    margin-left: 70px !important;
+}
+
+.m-x {
+    margin: 0px 5px !important;
+}
+
+.m-x-4 {
+    margin-right: 4rem;
+    margin-left: 4rem;
+}
+/*--------Margin End----------*/
+
+/*--------Width Start---------*/
+.w-70x {
+    width: 70px !important;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+.max-w-400x {
+    max-width: 400px;
+}
+/*--------Width End-----------*/
+
+/*--------Display Start-------*/
+.d-none {
+    display: none;
+}
+
+.d-none-i {
+    display: none !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-inline-block {
+    display: inline-block;
+}
+.d-inline-table {
+    display: inline-table;
+}
+/*--------Display End---------*/
+
+/*--------Float Start---------*/
+.float-right {
+    float: right;
+    clear: both;
+}
+/*--------Float End-----------*/
+
+/*--------Transition Start----*/
+.transition-3s {
+    transition: 0.3s;
+}
+/*--------Transition End------*/
+
+/*--------Shadow Start--------*/
+.box-shadow-none {
+    box-shadow: none !important;
+}
+/*--------Shadow End----------*/
+
+/*--------Opacity Start-------*/
+.opacity-7 {
+    opacity: 0.7;
+}
+/*--------Opacity End---------*/
+
+/*--------Text Start----------*/
+.font-size-2m {
+    font-size: 2em;
+}
+.font-size-1m {
+    font-size: 1em;
+}
+.md-font {
+    font-size: 1.2em;
+    font-family: monospace;
+}
+.text-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/*--------Text End------------*/
+
+/*--------Alignment Start-----*/
+.justify-content-end {
+    justify-content: flex-end;
+}
+.justify-content-center {
+    justify-content: center;
+}
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right !important;
+}
+/*--------Alignment End------------*/
+
+/*--------Position Start-----------*/
+.position-relative-p-t {
+    position: relative;
+    top: 7px;
+}
+/*--------Position End-----------*/
+
+
+/*--------Material Start-----------*/
+.material-icons.md-36 { font-size: 36px; }
+
+.mat-grid-tile .mat-figure {
+    top: 20px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    align-items: baseline !important;
+}
+/*--------Material End-------------*/
+
+/*--------Color Start--------------*/
+.c-red {
+    color: #f35353;
+}
+
+.c-green {
+    color: #48f357;
+}
+.c-dark {
+    color: black !important;
+}
+
+.c-primary {
+   color: #7b1fa2 !important;
+}
+.c-white {
+    color: white !important;
+}
+.bg-c-white {
+    background-color: #ffffff !important;
+}
+.bg-c-green {
+    background-color: #53f362 !important;
+}
+.bg-c-dark {
+    background-color: rgba(67, 44, 76, 0.33) !important;// rgba(38, 38, 38, 0.5) !important;
+}
+.bg-base-light {
+    background: rgba(123, 31, 162, 0.24) !important;
+}
+.bg-base-light-s {
+    background: rgba(123, 31, 162, 1) !important;
+}
+.bg-none {
+    background: none !important;
+}
+/*--------Color End--------------*/
+
+/*--------Overflow Start---------*/
+.overflow-v {
+    overflow: visible !important
+}
+/*--------Overflow End-----------*/
+
+/*--------Scroll Bar Start-------*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(173, 173, 173, 0.4); 
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(173, 173, 173); 
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(46, 46, 46); 
+}
+/*--------Scroll Bar End---------*/
+
+

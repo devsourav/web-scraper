@@ -1,0 +1,124 @@
+<div mat-dialog-title>
+  <span class="p-x">
+    <mat-form-field [style.marginBottom]="'-1.25em'" appearance="outline">
+      <i class="material-icons p-x" matPrefix>playlist_add</i>
+      <mat-label>Add Picker Set Name</mat-label>
+      <input matInput type="text" placeholder="Picker Set Name" [(ngModel)]="pickerSet.p_name">
+      <button mat-button *ngIf="pickerSet.p_name" matSuffix mat-icon-button aria-label="Clear" (click)="pickerSet.p_name=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </span>
+  <button mat-flat-button color="accent" class="float-right" disabled>
+    <i class="material-icons">format_paint</i>
+    <span class="p-x">Get picker from excel</span>
+  </button>
+</div>
+<div class="text-center">
+  <mat-form-field>
+    <mat-label>Attribute Name</mat-label>
+    <textarea matInput [(ngModel)]="picker.attribute" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="2"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Select Type</mat-label>
+    <mat-select matNativeControl (selectionChange)="selectedType($event.value)">
+      <mat-option *ngFor="let type of locatorTypes" [value]="type.id">{{type.type}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Locator</mat-label>
+    <textarea matInput [(ngModel)]="picker.locator" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="3"></textarea>
+  </mat-form-field>
+  <button mat-flat-button color="primary" class="margin" (click)="addAttribute()">
+    <i class="material-icons">add</i>
+    <span class="p">Add</span>
+  </button>
+  <span class="float-right p-t">
+    <button mat-stroked-button class="margin" [disabled]="pickerAttributes.length == 0" (click)="clearAllAttribute()">
+      <i class="material-icons">clear_all</i>
+      <span class="p">Clear All</span>
+    </button>
+  </span>
+</div>
+<div mat-dialog-content>
+  <div *ngIf="pickerAttributes.length > 0">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 bg-c-dark w-100">
+
+      <ng-container matColumnDef="#">
+        <th mat-header-cell *matHeaderCellDef> # </th>
+        <td mat-cell *matCellDef="let i = index"> {{i + 1}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="attribute">
+        <th mat-header-cell *matHeaderCellDef> Attribute Name </th>
+        <td mat-cell *matCellDef="let picker">
+          <span *ngIf="picker.isEdit else showAttribute">
+            <mat-form-field class="w-100 p-y">
+              <input matInput placeholder="Attribute" [(ngModel)]="picker.attribute" [value]="picker.attribute">
+            </mat-form-field>
+          </span>
+          <ng-template #showAttribute> {{picker.attribute}} </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let picker">
+          <span *ngIf="picker.isEdit else showType">
+            <mat-form-field class="w-100 p-y">
+              <mat-label> {{locatorTypes[+picker.type].type}} </mat-label>
+              <mat-select matNativeControl (selectionChange)="picker.type = $event.value">
+                <mat-option *ngFor="let type of locatorTypes" [value]="type.id">{{type.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </span>
+          <ng-template #showType> {{locatorTypes[+picker.type].type}} </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="locator">
+        <th mat-header-cell *matHeaderCellDef> Locator </th>
+        <td mat-cell *matCellDef="let picker">
+          <span *ngIf="picker.isEdit else showLocator">
+            <mat-form-field class="w-100 p-y">
+              <mat-label>Locator</mat-label>
+              <textarea matInput [(ngModel)]="picker.locator" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="3"></textarea>
+            </mat-form-field>
+          </span>
+          <ng-template #showLocator> {{picker.locator}} </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="text-right"> Actions </th>
+        <td mat-cell class="text-right p-r" *matCellDef="let picker;let i = index">
+          <span *ngIf="picker.isEdit else showEditOption">
+            <button mat-icon-button color="accent" matTooltip="Done" class="margin" (click)="toggleEdit(i)">
+              <i class="material-icons">done</i>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Undo" class="margin" (click)="toggleEdit(i)">
+              <i class="material-icons">replay</i>
+            </button>
+          </span>
+          <ng-template #showEditOption>
+            <button mat-icon-button color="accent" matTooltip="Edit" class="margin" (click)="toggleEdit(i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Trash" class="margin" (click)="removeAttribute(i)">
+              <i class="material-icons">clear</i>
+            </button>
+          </ng-template>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="attributeColumns; sticky: true" class="bg-base-light-s"></tr>
+      <tr mat-row *matRowDef="let row; columns: attributeColumns;"></tr>
+    </table>
+  </div>
+</div>
+<div mat-dialog-actions class="justify-content-end">
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="pickerSet" cdkFocusInitial>Ok</button>
+</div>
