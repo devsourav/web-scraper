@@ -8,3 +8,9 @@ export interface PickerSet {
     update_time?: Date;
     p_list?: AttributeExtraction[];
 }
+
+export interface PickerSetList {
+    _id:string;
+    __v: number;
+    picker_set: PickerSet;
+}

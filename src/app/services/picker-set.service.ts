@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RestService } from './rest.service'
-import { PickerSet } from '../models/picker-set.model';
+import { PickerSet, PickerSetList } from '../models/picker-set.model';
 import { Api_url, picker_url } from '../constants/api-url.constants';
 
 @Injectable({
@@ -19,11 +19,11 @@ export class PickerSetService {
     return this.restService.post(Api_url.PICKER + picker_url.PICKER_ADD, pickerSet, false);
   }
 
-  updatePickerSet(pickerSet: PickerSet) {
-    return this.restService.post(Api_url.PICKER + picker_url.PICKER_UPDATE, pickerSet, false);    
+  updatePickerSet(picker: PickerSetList) {
+    return this.restService.post(Api_url.PICKER + picker_url.PICKER_UPDATE, picker, false);
   }
 
-  removePickerSet(pickerSet: PickerSet) {
-    return this.restService.post(Api_url.PICKER + picker_url.PICKER_DELETE, pickerSet, false);    
+  removePickerSet(picker_id: string) {
+    return this.restService.get(Api_url.PICKER + picker_url.PICKER_DELETE + '/' + picker_id, false);
   }
 }
